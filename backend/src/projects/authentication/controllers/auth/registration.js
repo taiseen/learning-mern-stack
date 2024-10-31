@@ -1,5 +1,4 @@
 import userModel from '../../model/user.js';
-import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 
 
@@ -19,8 +18,8 @@ const registration = async (req, res) => {
         const user = await userModel.findOne({ email });
 
         if (user) return res
-            .status(httpStatus.CONFLICT) // 409 status code
-            .json({ message: 'Email already exist, you can login.', success: false });
+            .status(409) // CONFLICT status code
+            .json({ message: "Email already exist, you can login." });
 
 
 
@@ -40,8 +39,8 @@ const registration = async (req, res) => {
 
 
         res
-            .status(httpStatus.CREATED) // 201 status code
-            .json({ message: "Registration successfully.", success: true });
+            .status(201)
+            .json({ message: "Registration successfully." });
 
         // .json(savedUser);
         // send user info at frontend...
@@ -49,9 +48,8 @@ const registration = async (req, res) => {
     } catch (err) {
 
         res
-            .status(httpStatus.INTERNAL_SERVER_ERROR) // 500 status code
+            .status(500)
             .json({
-                success: false,
                 error: err.message,
                 message: "Internal server error.",
             });

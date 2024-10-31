@@ -1,15 +1,12 @@
-import httpStatus from 'http-status';
-
-
 // 🔎 Read || Checking Operation
-const logout = async (req, res) => {
+const logout = async (_, res) => {
 
     // const { refToken } = req.body;
 
-
     return res
-        .status(httpStatus.OK) // 200 status code
-        .json({ message: "You are logout successfully", success: true });
+        .status(200) // 200 status code
+        .clearCookie('token')
+        .json({ message: "You are logout successfully" });
 
 }
 

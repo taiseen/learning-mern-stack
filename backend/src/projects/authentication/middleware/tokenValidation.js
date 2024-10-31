@@ -1,17 +1,16 @@
 import config from '../../../config/index.js';
-import httpStatus from 'http-status';
 import jwt from "jsonwebtoken";
 
 
 const tokenValidation = (req, res, next) => {
 
     // this header data, come from frontend, when user login...
-    const jwtToken = req.header("Authorization").split(' ')[1];
+    const jwtToken = req.header("Authorization")?.split(' ')[1];
 
 
     // if no token present...
     if (!jwtToken) return res
-        .status(httpStatus.FORBIDDEN) // 403 status code
+        .status(403) // forbidden status code
         .json({ message: 'Unauthorized Access. JWT token is required.' });;
 
 
@@ -28,7 +27,7 @@ const tokenValidation = (req, res, next) => {
     } catch (err) {
 
         return res
-            .status(httpStatus.FORBIDDEN) // 403 status code
+            .status(403) // forbidden status code
             .json({
                 error: err.message,
                 message: 'Unauthorized, JWT token wrong or expired. ⏱️',

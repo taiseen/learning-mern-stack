@@ -23,7 +23,7 @@ const login = async (req, res) => {
         // if user not exist...
         if (!existingUser) return res
             .status(httpStatus.FORBIDDEN) // 403 status code
-            .json({ message: "User does not exist.", success: false });
+            .json({ message: "User does not exist."});
 
 
         // 🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
@@ -35,7 +35,7 @@ const login = async (req, res) => {
         // if password not match...
         if (!isPasswordMatch) return res
             .status(httpStatus.BAD_REQUEST) // 400 status code
-            .json({ message: "Invalid credentials.", success: false });
+            .json({ message: "Invalid credentials."});
 
 
         // 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
@@ -63,7 +63,6 @@ const login = async (req, res) => {
         res
             .status(httpStatus.INTERNAL_SERVER_ERROR) // 500 status code
             .json({
-                success: false,
                 error: err.message,
                 message: "Internal server error",
             })
