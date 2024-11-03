@@ -1,4 +1,4 @@
-import { addTask, apiEndPoint, deleteTaskById, getAllTask, updateTaskById } from "../../api/tasks";
+import { addTask, apiEndPoint, deleteTaskById, getAllTask, updateTaskById } from "./endPoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -25,12 +25,12 @@ export const useCreateTask = () => {
             queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
         },
 
-        // ✅ component re-render for refreshing latest data at ui...
-        onSettled: async (_, error) => {
-            error
-                ? console.log(error)
-                : await queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
-        },
+        // 🔄️✅🔄️ component re-render for refreshing latest data at ui...
+        // onSettled: (_, error) => {
+        //     error
+        //         ? console.log(error)
+        //         : queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
+        // },
     });
 }
 
@@ -47,7 +47,7 @@ export const useUpdateTask = () => {
             queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
         },
 
-        // ✅ component re-render for refreshing latest data at ui...
+        // 🔄️✅🔄️ component re-render for refreshing latest data at ui...
         onSettled: async (_, error) => {
             error
                 ? console.log(error)
@@ -69,12 +69,12 @@ export const useToggleTask = () => {
             queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
         },
 
-        // ✅ component re-render for refreshing latest data at ui...
-        onSettled: async (_, error) => {
-            error
-                ? console.log(error)
-                : await queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
-        },
+        // 🔄️✅🔄️ component re-render for refreshing latest data at ui...
+        // onSettled: async (_, error) => {
+        //     error
+        //         ? console.log(error)
+        //         : await queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
+        // },
     });
 }
 

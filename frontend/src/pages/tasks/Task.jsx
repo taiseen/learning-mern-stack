@@ -1,5 +1,6 @@
+import { useDeleteTodo, useToggleTask } from '../../api/tasks/apiService';
 import { FaCheck, FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { useDeleteTodo, useToggleTask } from "./apiService";
+
 
 
 const Task = ({ obj, setValue, setUpdateTask, updateTask }) => {

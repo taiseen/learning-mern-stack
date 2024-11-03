@@ -1,4 +1,4 @@
-import { useCreateTask, useGetAllTask, useUpdateTask } from './apiService';
+import { useCreateTask, useGetAllTask, useUpdateTask } from '../../api/tasks/apiService';
 import { FaPencilAlt, FaPlus, FaSearch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,8 +13,8 @@ const TaskManager = () => {
 
     const taskName = 'taskName';
     const [allTask, setAllTask] = useState([]); // for local searching purposes
-    const [filteredTasks, setFilteredTasks] = useState(allTask); // for local searching purposes
     const [updateTask, setUpdateTask] = useState(null);
+    const [filteredTasks, setFilteredTasks] = useState(allTask); // for local searching purposes
 
 
     const { data, isLoading, isError, error } = useGetAllTask();
