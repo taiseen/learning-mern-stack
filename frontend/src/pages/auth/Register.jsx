@@ -1,7 +1,6 @@
-
+import { registration } from "../../api/auth/endPoints";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { registration } from "../../api";
 import { toast } from "react-toastify";
 import { route } from "../../routes";
 import { useState } from "react";

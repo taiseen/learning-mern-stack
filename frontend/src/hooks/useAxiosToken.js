@@ -1,5 +1,5 @@
 import { useAuthUserContext } from '../context/AuthContext';
-import { getNewToken } from '../api';
+import { getNewToken } from '../api/auth/endPoints';
 import { useEffect } from 'react';
 import dbLocal from '../utils/dbLocal';
 import api from '../api/axios';

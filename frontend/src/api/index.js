@@ -1,97 +1,82 @@
-import api from "./axios";
-
-// 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
-
-// 🔒🔒🔒 Auth related api endpoints...
-export const login = (userInfo) => api.post('/auth/login', userInfo);
-
-export const logout = () => api.post('/auth/logout');
-
-export const registration = (userInfo) => api.post('/auth/register', userInfo);
-
-export const getNewToken = (refreshToken) => api.post('/auth/refresh-token', { refreshToken });
-
-// 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
+import { getNewToken } from './auth/endPoints';
+import dbLocal from '../utils/dbLocal';
+import axios from 'axios';
 
 
-export const getProducts = async ({ queryKey }) => {
-    // this { queryKey } auto supply by useQuery hook...
-    const response = await api.get(queryKey[0]);
-    return response.data;
-}
+const api = axios.create({ baseURL: import.meta.env.VITE_SERVER_BASE_URL });
+
+const { request, response } = api.interceptors;
 
 
-// export const getPopularPosts = async ({ queryKey }) => {
-//     // this { queryKey } auto supply by useQuery hook...
-//     const response = await api.get(queryKey[0]);
-//     return response.data;
-// }
+// this this going to connect with (auth middleware) at BackEnd
+// (auth middleware) can not work without this ==> token file
+// this method run at ==> every requests... that created by user at FrontEnd
+// this invoke before all of these requests that are call bellow
+// by invoking this every time, we send our token to BackEnd 
+// BackEnd auth middleware can verify that, who is currently login now...
+// so by this process ==> BackEnd get specific header file... & base on that header do his logic...
 
-// export const getFavoritePosts = async ({ queryKey }) => {
-//     const response = await api.get(queryKey[0]);
-//     return response.data;
-// }
+// ➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️
+// add outgoing ===> request interceptor 
+// ➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️➡️
+request.use(
 
-// 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
+    (reqConfig) => {
+        // 1st ==> get user token from LocalStorage, that server send to client...
+        const { accessToken } = dbLocal('get', 'user') ?? '';
 
-// export const getPaginatedProducts = async ({ queryKey }) => {
-//     const response = await api.get(`${queryKey[0]}?_page=${queryKey[1].page}&_per_page=6`);
-//     return response.data;
-// }
+        if (accessToken) {
+            // 2nd ==> send this token from LocalStorage into server for user id tracking... 
+            reqConfig.headers.authorization = `Bearer ${accessToken}`;
+        }
 
-// export const getProductById = async ({ queryKey }) => {
-//     const response = await api.get(`${queryKey[0]}/${queryKey[1]}`);
-//     return response.data;
-// }
+        return reqConfig;
+    },
 
-// export const addNewProduct = async (item) => {
-//     const response = await api.post('products', item);
-//     return response.data;
-// }
-
-// export const editProduct = async (item) => {
-//     const response = await api.patch(`products/${item.id}`, item);
-//     return response.data;
-// }
-
-// export const productDeleteById = async (id) => {
-//     await api.delete(`products/${id}`);
-// }
-
-// 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
-
-// export const getAllPost = () => api.get(`/posts`);
-
-// export const likePost = (postId) => api.patch(`/posts/${postId}/like`);
-
-// export const getProfile = (userId) =>
-//     api.get(`/profile/${userId}`);
-
-// export const profileBioUpdate = (userId, bio) =>
-//     api.patch(`/profile/${userId}`, { bio });
-
-// export const profileImgUpdate = (userId, fromData) =>
-//     api.post(`/profile/${userId}/avatar`, fromData);
-
-// export const createNewPost = (post) =>
-//     api.post(`/posts`, { post });
-
-// export const deletePost = (postId) =>
-//     api.delete(`/posts/${postId}`);
-
-// export const postComment = (postId, comment) =>
-//     api.post(`/posts/${postId}/comment`, { comment });
+    (error) => Promise.reject(error)
+);
 
 
-// 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
+// ⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️
+// add incoming <=== response interceptor 
+// ⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️⬅️
+response.use(
 
-// export const getAllProducts = async ({ queryKey }) => {
-//     // this { queryKey } auto supply by useQuery hook...
-//     const response = await api.get(queryKey[0]);
-//     return response.data;
-// }
+    (response) => response,
 
-// export const getPaginatedProducts = async ({ queryKey }) => {
-//     const response = await api.get(`${queryKey[0]}?_page=${queryKey[1].page}&_per_page=6`);
-//     return response.data;
-// }
+    async (error) => {
+        const originalRequest = error.config;
+
+        // If the error status is 403 & there is no originalRequest.retryToke flag,
+        // then its mean that - this token has expired & we need to refresh it...
+        if (error.response.status === 403 && !originalRequest.retryToke) {
+
+            originalRequest.retryToke = true;
+
+            const authUser = dbLocal('get', 'user') ?? {};
+
+            try {
+                const response = await getNewToken(authUser.refreshToken);
+
+                const { accessToken, refreshToken } = response.data;
+
+
+                const userInfo = { ...authUser, accessToken, refreshToken };
+
+                dbLocal('set', 'user', userInfo); // set info to localStorage
+
+                // Retry the original request with the new token
+                originalRequest.headers.Authorization = "Bearer " + accessToken;
+
+                return api(originalRequest);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        return Promise.reject(error)
+    }
+);
+
+
+export default api;

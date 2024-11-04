@@ -1,15 +1,14 @@
 import { useAuthUserContext } from "../../context/AuthContext";
+import { getProducts } from "../../api/products/endPoints";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../api";
-import { toast } from "react-toastify";
-import LogoutBtn from "../../components/auth/LogoutBtn";
 import { Header } from "../../components/Header";
+import { toast } from "react-toastify";
 
 
 const Home = () => {
 
     const { authUser } = useAuthUserContext();
-    const { name, email } = authUser ?? {};
+    const { name } = authUser ?? {};
 
     // useAxiosToken();
 

@@ -1,4 +1,5 @@
 import { useAuthUserContext } from "../../context/AuthContext";
+import { logout } from "../../api/auth/endPoints";
 import { useNavigate } from "react-router-dom";
 import { route } from "../../routes";
 import dbLocal from "../../utils/dbLocal";
@@ -12,7 +13,7 @@ const LogoutBtn = () => {
 
 
     const handelLogout = async () => {
-        // await logOut();
+        await logout();
         setAuthUser({});
         dbLocal('clear', 'user');
         navigate(route.login);

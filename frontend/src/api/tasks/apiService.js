@@ -69,12 +69,13 @@ export const useToggleTask = () => {
             queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
         },
 
+        // 🟥🟥🟥 if multiple || concurrently click on the check button... this case need this approach...
         // 🔄️✅🔄️ component re-render for refreshing latest data at ui...
-        // onSettled: async (_, error) => {
-        //     error
-        //         ? console.log(error)
-        //         : await queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
-        // },
+        onSettled: async (_, error) => {
+            error
+                ? console.log(error)
+                : await queryClient.invalidateQueries({ queryKey: [apiEndPoint] });
+        },
     });
 }
 
