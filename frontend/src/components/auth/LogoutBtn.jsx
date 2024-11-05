@@ -1,28 +1,13 @@
-import { useAuthUserContext } from "../../context/AuthContext";
-import { logout } from "../../api/auth/endPoints";
-import { useNavigate } from "react-router-dom";
-import { route } from "../../routes";
-import dbLocal from "../../utils/dbLocal";
+import { useLogout } from "../../api/auth/apiService";
 
 
 const LogoutBtn = () => {
 
-    const navigate = useNavigate();
-
-    const { setAuthUser } = useAuthUserContext();
-
-
-    const handelLogout = async () => {
-        await logout();
-        setAuthUser({});
-        dbLocal('clear', 'user');
-        navigate(route.login);
-    }
-
+    const { mutate: logout } = useLogout();
 
     return (
         <button
-            onClick={handelLogout}
+            onClick={() => logout()}
             className="px-3 py-2 bg-red-400 rounded hover:bg-red-500 duration-300"
         >
             Logout

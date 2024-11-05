@@ -1,9 +1,7 @@
-import { registration } from "../../api/auth/endPoints";
+import { useRegistration } from "../../api/auth/apiService";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import { route } from "../../routes";
-import { useState } from "react";
 import Loading from "../../utils/Loading";
 
 
@@ -20,58 +18,19 @@ const space = 'Space Not Allow';
 
 const Register = () => {
 
-    const { register, handleSubmit, reset, setFocus, formState: { errors } } = useForm(); // custom hook by lib...
-
-    const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
+    
+    const { register, handleSubmit, reset, setFocus, formState: { errors, isSubmitting } } = useForm(); // custom hook by lib...
+
+    const { mutate: registrationMutation, isPending } = useRegistration(setFocus, reset);
+
+    const isBtnDisable = isSubmitting || isPending;
 
 
-    // go to login page
-    const handleLoginNow = () => navigate(route.login);
+    const handleLoginNow = () => navigate(route.login); // go to login page
 
 
-    const handleRegistrationSubmit = async (data) => {
-        const { name, email, password } = data;
-
-        try {
-            setIsLoading(true);
-            const userInfo = { name, email, password };
-            const { data } = await registration(userInfo);
-
-            toast.success(data.message);
-
-            setFocus('name', { shouldFocus: true }) // cursor focus back into 1st input field...
-
-            reset(); // clear user input fields... after submit data...
-
-            setTimeout(() => navigate(route.login), 5000) // auto redirect after 5 second...
-
-        } catch (error) {
-
-            const res = error.response;
-
-            // if (errorRes.status === 400) { // "Bad Request"
-            //     toast.error(errorRes.data?.error?.details[0]?.message);
-            // }
-
-            // if (errorRes.status === 409) { // "Conflict"
-            //     toast.error(errorRes.data?.message);
-            // }
-
-            const errorMap = {
-                400: res.data?.error?.details[0]?.message, // Bad Request
-                409: res.data?.message // Conflict
-            };
-
-            const errorMessage = errorMap[res.status];
-
-            if (errorMessage) toast.error(errorMessage);
-
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const handleRegistration = data => registrationMutation(data);
 
 
     return (
@@ -82,10 +41,10 @@ const Register = () => {
             <form
                 noValidate
                 className="authForm"
-                onSubmit={handleSubmit(handleRegistrationSubmit)}
+                onSubmit={handleSubmit(handleRegistration)}
             >
                 {
-                    isLoading &&
+                    isPending &&
                     <div className="backdropLoading">
                         <Loading />
                     </div>
@@ -127,7 +86,6 @@ const Register = () => {
                                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                 message: 'Invalid email address'
                             },
-
                         })}
                     />
 
@@ -165,7 +123,11 @@ const Register = () => {
                 </div>
 
 
-                <button type="submit" className="submitBtn">
+                <button
+                    type="submit"
+                    className="submitBtn"
+                    disabled={isBtnDisable}
+                >
                     Register
                 </button>
 

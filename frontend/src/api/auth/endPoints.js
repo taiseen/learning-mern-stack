@@ -1,9 +1,10 @@
 import api from '..';
 
-export const login = (userInfo) => api.post('/auth/login', userInfo);
+export const registration = async (userInfo) => await api.post('/auth/register', userInfo);
 
-export const logout = () => api.post('/auth/logout');
+export const login = async (userInfo) => await api.post('/auth/login', userInfo);
 
-export const registration = (userInfo) => api.post('/auth/register', userInfo);
+export const logout = async () => await api.post('/auth/logout');
 
-export const getNewToken = (refreshToken) => api.post('/auth/refresh-token', { refreshToken });
+export const getNewToken = async (refreshToken) => await api.post('/auth/refresh-token', { refreshToken });
+
