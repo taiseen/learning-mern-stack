@@ -1,6 +1,5 @@
+import { useGetAllProduct } from "../../api/products/apiService";
 import { useAuthUserContext } from "../../context/AuthContext";
-import { getProducts } from "../../api/products/endPoints";
-import { useQuery } from "@tanstack/react-query";
 import { Header } from "../../components/Header";
 import { toast } from "react-toastify";
 
@@ -13,17 +12,8 @@ const Home = () => {
     // useAxiosToken();
 
     // for 🔎 Read/Get data by id functionality...
-    const { data, error, isLoading } = useQuery({
-        queryKey: ['products'],
-        queryFn: getProducts,
+    const { data, error, isLoading } = useGetAllProduct();
 
-        retry: false, // 🟩 no auto network request | by default 3 times...
-        // 🟩 if in server change any data, this staleTime property always listing for new changed data
-        refetchInterval: 1000 * 20 // 🟩 in every 5 second re-fetch data
-    });
-
-    // // for token sending with axios api call...
-    // useEffect(() => { }, [api]);
 
     if (error) {
         toast.error(error?.response?.data?.message);
@@ -36,6 +26,7 @@ const Home = () => {
             </div>
         )
     }
+
     // if (error) return <div className="">Error occurred : {error.message}</div>
 
 
