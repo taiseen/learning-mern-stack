@@ -97,19 +97,13 @@ const TaskManager = () => {
                             type="text"
                             className={`w-full p-2 rounded-l-sm outline-none text-black text-xl
                                 ${errors[taskName] ? 'placeholder:text-red-500' : ''}
-                                `}
-
+                            `}
                             placeholder={`${errors[taskName]
                                 ? errors[taskName].message
                                 : "Enter new task..."}`
                             }
-
                             {...register(taskName, {
-                                required: {
-                                    value: true,
-                                    message: 'This field is required',
-                                },
-
+                                required: { value: true, message: 'This field is required' },
                                 minLength: { value: 2, message: 'Minimum length 2' },
                             })}
                         />
@@ -129,8 +123,8 @@ const TaskManager = () => {
                     <div className="w-1/2 flex items-center">
                         <input
                             type="search"
-                            className="w-full p-2 rounded-l-sm outline-none text-black text-xl"
                             placeholder="Search task..."
+                            className="w-full p-2 rounded-l-sm outline-none text-black text-xl"
                             onChange={debounce((e) => handleTaskSearch(e), 300)}
                         />
 

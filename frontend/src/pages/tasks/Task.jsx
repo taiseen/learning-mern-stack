@@ -2,7 +2,6 @@ import { useDeleteTodo, useToggleTask } from '../../api/tasks/apiService';
 import { FaCheck, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 
-
 const Task = ({ obj, setValue, setUpdateTask, updateTask }) => {
 
     const { mutate: deleteMutate } = useDeleteTodo();
@@ -29,10 +28,7 @@ const Task = ({ obj, setValue, setUpdateTask, updateTask }) => {
 
 
     return (
-        <div
-
-            className="bg-slate-800 flex gap-2 p-2 rounded-sm"
-        >
+        <div className="bg-slate-800 flex gap-2 p-2 rounded-sm">
 
             <p className={`flex-1 text-2xl ${obj.isDone ? 'line-through text-green-600' : ''}`}>
                 {obj.taskName}
@@ -41,13 +37,13 @@ const Task = ({ obj, setValue, setUpdateTask, updateTask }) => {
 
             <div className="flex gap-2 items-center text-slate-700">
                 <button
+                    disabled={!!updateTask}
+                    onClick={() => handleTaskCheckToggle(obj)}
                     className={`p-2 rounded-sm duration-300 
                         ${updateTask
                             ? 'cursor-not-allowed bg-slate-900'
                             : 'bg-green-300 hover:bg-green-500'}`
                     }
-                    onClick={() => handleTaskCheckToggle(obj)}
-                    disabled={!!updateTask}
                 >
                     <FaCheck />
                 </button>
